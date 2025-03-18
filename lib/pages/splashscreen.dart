@@ -1,7 +1,11 @@
+import 'dart:async';
+
+import 'package:bjbauction/main.dart';
 import 'package:bjbauction/utils/color.dart';
 import 'package:flutter/material.dart';
 import 'package:bjbauction/pages/signupscreen.dart';
-import 'dart:async'; // Import untuk Timer
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -12,13 +16,29 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // Navigasi ke halaman walkthrough setelah beberapa detik
-    Future.delayed(Duration(milliseconds: 2000), () {
+    _checkLoginStatus(); // Check if user is already logged in
+  }
+
+  Future<void> _checkLoginStatus() async {
+    await Future.delayed(const Duration(seconds: 2)); // Simulate splash delay
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+
+    if (token != null && !JwtDecoder.isExpired(token)) {
+      String role = prefs.getString('role') ?? 'user';
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MainScreen(isAdmin: role == "admin"),
+        ),
+      );
+    } else {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => WalkthroughScreen()),
       );
-    });
+    }
   }
 
   @override

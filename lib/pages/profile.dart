@@ -3,9 +3,21 @@ import 'package:bjbauction/pages/loginScreen.dart';
 import 'package:bjbauction/utils/color.dart';
 import 'package:bjbauction/widgets/button.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
+
+  // Fungsi logout
+  Future<void> _logout(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear(); // Hapus semua data yang tersimpan
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+      (route) => false, // Menghapus semua history navigation
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,16 +163,7 @@ class Profile extends StatelessWidget {
               ],
             ),
             SizedBox(height: 16),
-            Button(
-              text: "Keluar",
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                  (route) => false, // Menghapus semua halaman sebelumnya
-                );
-              },
-            ),
+            Button(text: "Keluar", onPressed: () => _logout(context)),
           ],
         ),
       ),

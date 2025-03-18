@@ -42,28 +42,25 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
-  late final List<Widget> _pages;
+  // Gunakan getter agar halaman selalu dibuat ulang saat build()
+  List<Widget> get _pages =>
+      widget.isAdmin
+          ? [const HomeAdmin(), const ProfileAdmin()]
+          : [const Home(), const Auction(), const Wishlist(), const Profile()];
 
-  @override
-  void initState() {
-    super.initState();
-    _pages =
-        widget.isAdmin
-            ? [const HomeAdmin(), const ProfileAdmin()]
-            : [
-              const Home(),
-              const Auction(),
-              const Wishlist(),
-              const Profile(),
-            ];
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
-
-  void _onItemTapped(int index) => setState(() => _selectedIndex = index);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(index: _selectedIndex, children: _pages),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages, // Setiap build, ini akan dipanggil ulang
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,

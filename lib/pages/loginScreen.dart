@@ -1,3 +1,4 @@
+import 'package:bjbauction/main.dart';
 import 'package:bjbauction/pages/home.dart';
 import 'package:bjbauction/pages/homeAdmin.dart';
 import 'package:bjbauction/utils/color.dart';
@@ -245,19 +246,15 @@ class _LoginScreenState extends State<LoginScreen> {
       await prefs.setString('token', token);
       await prefs.setString('role', role);
 
-      if (role == 'admin') {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => HomeAdmin()),
-          (route) => false, // This removes all previous routes (LoginScreen)
-        );
-      } else {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => Home()),
-          (route) => false, // This removes all previous routes (LoginScreen)
-        );
-      }
+      // Navigate to MainScreen with role
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder:
+              (context) => MainScreen(isAdmin: role == "admin" ? true : false),
+        ),
+        (route) => false, // Removes previous routes (LoginScreen)
+      );
     } else {
       setState(() {
         _isError = true;
