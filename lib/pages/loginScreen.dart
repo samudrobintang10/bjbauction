@@ -196,9 +196,10 @@ class _LoginScreenState extends State<LoginScreen> {
     // Example: Simple validation before navigating
     // if (_emailController.text.isNotEmpty &&
     //     _passwordController.text.isNotEmpty) {
-    Navigator.pushReplacement(
+    Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => MainScreen()),
+      (route) => false, // This removes all previous screens from the stack
     );
     // } else {
     //   setState(() {

@@ -101,7 +101,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
 
   // Method untuk memulai auto-slider
   void _startAutoSlider() {
-    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
+    _timer = Timer.periodic(Duration(seconds: 20), (timer) {
       if (_currentPage < _contents.length - 1) {
         _currentPage++;
       } else {
