@@ -81,7 +81,6 @@ class WalkthroughScreen extends StatefulWidget {
 class _WalkthroughScreenState extends State<WalkthroughScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
-
   // Timer untuk auto-sliding
   Timer? _timer;
 
@@ -112,23 +111,21 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
     // Jalankan auto-slider
     _startAutoSlider();
   }
-
   @override
   void dispose() {
     _pageController.dispose();
     _timer?.cancel(); // Hentikan timer saat widget dihapus
     super.dispose();
   }
-
+  
   // Method untuk memulai auto-slider
   void _startAutoSlider() {
-    _timer = Timer.periodic(Duration(seconds: 20), (timer) {
+    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
       if (_currentPage < _contents.length - 1) {
         _currentPage++;
       } else {
         _currentPage = 0;
       }
-
       _pageController.animateToPage(
         _currentPage,
         duration: Duration(milliseconds: 500),
@@ -145,18 +142,17 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
       );
     } else {
       // Navigate to SignUpScreen
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => SignUpScreen()),
       );
     }
   }
-
   // Method untuk navigasi ke halaman tertentu ketika dot indicator diklik
   void _goToPage(int pageIndex) {
     _pageController.animateToPage(
       pageIndex,
-      duration: Duration(milliseconds: 10000),
+      duration: Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
   }
@@ -170,7 +166,6 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
           children: [
             // App Bar
             _buildAppBar(),
-
             // Walkthrough content (bergerak saat diswipe)
             Expanded(
               child: PageView.builder(
@@ -186,7 +181,6 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                 },
               ),
             ),
-
             // Bottom section (tetap statis)
             _buildStaticBottomSection(),
           ],
@@ -224,11 +218,11 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
               ],
             ),
           ),
-
+          
           // Skip button
           TextButton(
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => SignUpScreen()),
               );

@@ -8,7 +8,7 @@ class AuthService {
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
       // Prepare request body
-      final Map<String, String> requestBody = {
+      final Map<String, dynamic> requestBody = {
         'email': email,
         'password': password,
       };
@@ -50,20 +50,28 @@ class AuthService {
     }
   }
 
-  // Register method
-  Future<Map<String, dynamic>> register(
-    String name, 
-    String email, 
-    String password,
-    String confirmPassword,
-  ) async {
+  // Register method with all required fields
+  Future<Map<String, dynamic>> register({
+    required String email,
+    required String password,
+    required String name,
+    required String phoneNumber,
+    required String nik,
+    required String dateOfBirth,
+    required String gender,
+    required String city,
+  }) async {
     try {
-      // Prepare request body
-      final Map<String, String> requestBody = {
+      // Prepare request body with all fields
+      final Map<String, dynamic> requestBody = {
         'name': name,
         'email': email,
+        'phone_number': phoneNumber,
         'password': password,
-        'password_confirmation': confirmPassword,
+        'nik': nik,
+        'date_of_birth': dateOfBirth,
+        'gender': gender,
+        'city': city,
       };
 
       // Make API request
@@ -76,12 +84,17 @@ class AuthService {
       // Parse response
       final responseData = jsonDecode(response.body);
 
-      if (response.statusCode == 201) {
-        // Successful registration
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Check if token is provided in the response
+        if (responseData['data'] != null && 
+            responseData['data']['access_token'] != null) {
+          final accessToken = responseData['data']['access_token'];
+          await _saveToken(accessToken);
+        }
+        
         return {
           'success': true,
           'message': responseData['message'] ?? 'Registrasi berhasil',
-          'data': responseData['data'],
         };
       } else {
         // Error response
@@ -117,6 +130,4 @@ class AuthService {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('access_token');
   }
-
-  
 }

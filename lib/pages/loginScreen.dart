@@ -4,7 +4,6 @@ import 'package:bjbauction/pages/homeAdmin.dart';
 import 'package:bjbauction/utils/color.dart';
 import 'package:flutter/material.dart';
 import 'package:bjbauction/pages/signupscreen.dart';
-import 'package:bjbauction/pages/surveyformscreen1.dart';
 import 'package:bjbauction/services/auth_service.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,11 +52,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 Text(
                   'Temukan aset pilihanmu bersama kami',
                   style: TextStyle(fontSize: 14, color: Colors.black87),
-                ),
-                SizedBox(height: 30),
-                Text(
-                  'Email',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                 ),
                 SizedBox(height: 8),
                 TextFormField(

@@ -1,7 +1,18 @@
-import 'package:bjbauction/utils/color.dart';
 import 'package:flutter/material.dart';
+import 'package:bjbauction/services/auth_service.dart';
+import 'package:bjbauction/pages/loginscreen.dart';
+import 'package:intl/intl.dart';
 
 class SurveyFormScreen2 extends StatefulWidget {
+  final String email;
+  final String password;
+  
+  const SurveyFormScreen2({
+    Key? key, 
+    required this.email,
+    required this.password,
+  }) : super(key: key);
+
   @override
   _SurveyFormScreen2State createState() => _SurveyFormScreen2State();
 }
@@ -10,18 +21,33 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
   final _nikController = TextEditingController();
   final _namaController = TextEditingController();
   final _tanggalLahirController = TextEditingController();
-  final _alamatController = TextEditingController();
   final _teleponController = TextEditingController();
   String? _selectedJenisKelamin;
   String? _selectedLokasi;
+  bool _isLoading = false;
+  bool _isError = false;
+  String _errorMessage = '';
+  
+  // Initialize auth service
+  final AuthService _authService = AuthService();
 
   List<String> jenisKelaminList = ['Laki-Laki', 'Perempuan'];
-  List<String> lokasiList = [
-    'Kota Bandung',
-    'Jakarta',
-    'Surabaya',
-    'Yogyakarta',
-  ];
+  List<String> lokasiList = ['Kota Bandung', 'Jakarta', 'Surabaya', 'Yogyakarta'];
+
+  // Map UI values to API values
+  String _mapGender(String uiGender) {
+    return uiGender == 'Laki-Laki' ? 'male' : 'female';
+  }
+
+  String _mapCity(String uiCity) {
+    final cityMap = {
+      'Kota Bandung': 'bandung',
+      'Jakarta': 'jakarta',
+      'Surabaya': 'surabaya',
+      'Yogyakarta': 'yogyakarta'
+    };
+    return cityMap[uiCity] ?? uiCity.toLowerCase();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,45 +63,39 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: CustomColors.primary,
+                  color: Color(0xFF1A5B8F),
                 ),
               ),
               SizedBox(height: 8),
               Text(
                 'Isilah data diri dibawah ini dengan benar dan lengkap.',
-                style: TextStyle(fontSize: 14, color: Colors.black87),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black87,
+                ),
               ),
               SizedBox(height: 20),
-
+              
               // NIK Field
               _buildLabelText('NIK'),
-              _buildTextField(
-                _nikController,
-                'Masukkan NIK',
-                TextInputType.number,
-              ),
+              _buildTextField(_nikController, 'Masukkan NIK', TextInputType.number),
               SizedBox(height: 16),
-
+              
               // Nama Lengkap Field
               _buildLabelText('Nama Lengkap'),
               _buildTextField(_namaController, 'Masukkan nama lengkap'),
               SizedBox(height: 16),
-
+              
               // Tanggal Lahir Field
               _buildLabelText('Tanggal Lahir'),
               GestureDetector(
                 onTap: () => _selectDate(context),
                 child: AbsorbPointer(
-                  child: _buildTextField(
-                    _tanggalLahirController,
-                    'DD/MM/YYYY',
-                    TextInputType.text,
-                    Icons.calendar_today,
-                  ),
+                  child: _buildTextField(_tanggalLahirController, 'YYYY-MM-DD', TextInputType.text, Icons.calendar_today),
                 ),
               ),
               SizedBox(height: 16),
-
+              
               // Jenis Kelamin Field
               _buildLabelText('Jenis Kelamin'),
               _buildDropdown(
@@ -89,7 +109,7 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
                 },
               ),
               SizedBox(height: 16),
-
+              
               // Lokasi Field
               _buildLabelText('Lokasi'),
               _buildDropdown(
@@ -103,36 +123,54 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
                 },
               ),
               SizedBox(height: 16),
-
+              
               // Nomor Telepon Field
               _buildLabelText('Nomor Telepon'),
-              _buildTextField(
-                _teleponController,
-                'Masukkan nomor telepon',
-                TextInputType.phone,
-              ),
+              _buildTextField(_teleponController, 'Masukkan nomor telepon', TextInputType.phone),
+              
+              if (_isError)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    _errorMessage,
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              
               SizedBox(height: 40),
-
+              
               // Submit Button
               Container(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: _submitData,
+                  onPressed: _isLoading ? null : _validateAndRegister,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: CustomColors.primary,
+                    backgroundColor: Color(0xFF1A5B8F),
                     padding: EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: Text(
-                    'Simpan',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                    ),
-                  ),
+                  child: _isLoading
+                      ? SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : Text(
+                          'Simpan',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white
+                          ),
+                        ),
                 ),
               ),
               SizedBox(height: 20),
@@ -148,33 +186,35 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Text(
         label,
-        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+        style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+        ),
       ),
     );
   }
 
   Widget _buildTextField(
-    TextEditingController controller,
-    String hintText, [
-    TextInputType? keyboardType,
-    IconData? suffixIcon,
-  ]) {
+    TextEditingController controller, 
+    String hintText, 
+    [TextInputType? keyboardType, 
+    IconData? suffixIcon]
+  ) {
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hintText,
         contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        enabledBorder: OutlineInputBorder(
+        border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: CustomColors.primary),
+          borderSide: BorderSide(color: Colors.grey.shade300),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: CustomColors.primary),
+          borderSide: BorderSide(color: Color(0xFF1A5B8F)),
         ),
-        suffixIcon:
-            suffixIcon != null ? Icon(suffixIcon, color: Colors.grey) : null,
+        suffixIcon: suffixIcon != null ? Icon(suffixIcon, color: Colors.grey) : null,
       ),
     );
   }
@@ -187,7 +227,7 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: CustomColors.primary),
+        border: Border.all(color: Colors.grey.shade300),
         borderRadius: BorderRadius.circular(8),
       ),
       child: DropdownButtonHideUnderline(
@@ -203,16 +243,15 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
           elevation: 16,
           style: TextStyle(color: Colors.black87),
           onChanged: onChanged,
-          items:
-              items.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text(value),
-                  ),
-                );
-              }).toList(),
+          items: items.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(value),
+              ),
+            );
+          }).toList(),
         ),
       ),
     );
@@ -227,8 +266,8 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
       builder: (context, child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            primaryColor: CustomColors.primary,
-            colorScheme: ColorScheme.light(primary: CustomColors.primary),
+            primaryColor: Color(0xFF1A5B8F),
+            colorScheme: ColorScheme.light(primary: Color(0xFF1A5B8F)),
             buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
           ),
           child: child!,
@@ -237,38 +276,86 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
     );
     if (picked != null) {
       setState(() {
-        _tanggalLahirController.text =
-            "${picked.day}/${picked.month}/${picked.year}";
+        // Format date as YYYY-MM-DD for API
+        _tanggalLahirController.text = DateFormat('yyyy-MM-dd').format(picked);
       });
     }
   }
 
-  void _submitData() {
-    // Add validation logic
+  void _validateAndRegister() async {
+    // Reset error state
+    setState(() {
+      _isError = false;
+      _errorMessage = '';
+    });
+    
+    // Validate form
     if (_nikController.text.isEmpty ||
         _namaController.text.isEmpty ||
         _tanggalLahirController.text.isEmpty ||
         _selectedJenisKelamin == null ||
         _selectedLokasi == null ||
         _teleponController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Semua field harus diisi'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      setState(() {
+        _isError = true;
+        _errorMessage = 'Semua field harus diisi';
+      });
       return;
     }
 
-    // Navigate to next screen or show success message
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Data berhasil disimpan'),
-        backgroundColor: CustomColors.primary,
-      ),
-    );
+    // Show loading indicator
+    setState(() {
+      _isLoading = true;
+    });
 
-    // Untuk demo, kembali ke login screen setelah submit
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    try {
+      // Call registration API with all data
+      final result = await _authService.register(
+        email: widget.email,
+        password: widget.password,
+        name: _namaController.text.trim(),
+        phoneNumber: _teleponController.text.trim(),
+        nik: _nikController.text.trim(),
+        dateOfBirth: _tanggalLahirController.text,
+        gender: _mapGender(_selectedJenisKelamin!),
+        city: _mapCity(_selectedLokasi!),
+      );
+
+      // Hide loading indicator
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (result['success']) {
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Registrasi berhasil'),
+            backgroundColor: Color(0xFF1A5B8F),
+          ),
+        );
+        
+        // Navigate to login screen
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+          (route) => false,
+        );
+      } else {
+        // Show error message
+        setState(() {
+          _isError = true;
+          _errorMessage = result['message'];
+        });
+      }
+    } catch (e) {
+      // Handle unexpected errors
+      setState(() {
+        _isLoading = false;
+        _isError = true;
+        _errorMessage = 'Terjadi kesalahan. Silakan coba lagi.';
+      });
+      print('Registration error: $e');
+    }
   }
 }

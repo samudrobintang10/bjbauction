@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:bjbauction/pages/surveyformscreen2.dart';
 
 class SurveyFormScreen1 extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +50,6 @@ class SurveyFormScreen1 extends StatelessWidget {
                   ],
                 ),
               ),
-
               // Button with fixed position at bottom
               Container(
                 width: double.infinity,
