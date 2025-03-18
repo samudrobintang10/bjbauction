@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:bjbauction/pages/surveyformscreen2.dart';
 
 class SurveyFormScreen1 extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,12 +54,7 @@ class SurveyFormScreen1 extends StatelessWidget {
                 margin: EdgeInsets.only(bottom: 20),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SurveyFormScreen2(),
-                      ),
-                    );
+                    Navigator.of(context).popUntil((route) => route.isFirst);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: CustomColors.primary,
