@@ -1,4 +1,5 @@
 import 'package:bjbauction/pages/editprofile.dart';
+import 'package:bjbauction/pages/loginScreen.dart';
 import 'package:bjbauction/utils/color.dart';
 import 'package:bjbauction/widgets/button.dart';
 import 'package:flutter/material.dart';
@@ -153,7 +154,11 @@ class Profile extends StatelessWidget {
             Button(
               text: "Keluar",
               onPressed: () {
-                print("Keluar Pressed");
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                  (route) => false, // Menghapus semua halaman sebelumnya
+                );
               },
             ),
           ],

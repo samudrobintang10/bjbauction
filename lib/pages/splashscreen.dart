@@ -1,3 +1,4 @@
+import 'package:bjbauction/utils/color.dart';
 import 'package:flutter/material.dart';
 import 'package:bjbauction/pages/signupscreen.dart';
 import 'dart:async'; // Import untuk Timer
@@ -30,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
               TextSpan(
                 text: 'BJB\n',
                 style: TextStyle(
-                  color: Color(0xFF1A5B8F),
+                  color: CustomColors.primary,
                   fontSize: 72,
                   fontWeight: FontWeight.bold,
                 ),
@@ -187,7 +188,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                 TextSpan(
                   text: 'BJB ',
                   style: TextStyle(
-                    color: Color(0xFF1A5B8F),
+                    color: CustomColors.primary,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -212,7 +213,10 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                 MaterialPageRoute(builder: (context) => SignUpScreen()),
               );
             },
-            child: Text('Lewati', style: TextStyle(color: Color(0xFF1A5B8F))),
+            child: Text(
+              'Lewati',
+              style: TextStyle(color: CustomColors.primary),
+            ),
           ),
         ],
       ),
@@ -250,7 +254,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF1A5B8F),
+              color: CustomColors.primary,
             ),
           ),
 
@@ -310,7 +314,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
             child: ElevatedButton(
               onPressed: _goToNextPage,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF1A5B8F),
+                backgroundColor: CustomColors.primary,
                 padding: EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),

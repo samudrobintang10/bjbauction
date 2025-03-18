@@ -1,3 +1,4 @@
+import 'package:bjbauction/utils/color.dart';
 import 'package:flutter/material.dart';
 import 'package:bjbauction/pages/surveyformscreen2.dart';
 
@@ -26,7 +27,11 @@ class SurveyFormScreen1 extends StatelessWidget {
                             color: Colors.grey[200],
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: Icon(Icons.people, size: 100, color: Colors.grey),
+                          child: Icon(
+                            Icons.people,
+                            size: 100,
+                            color: Colors.grey,
+                          ),
                         );
                       },
                     ),
@@ -43,7 +48,7 @@ class SurveyFormScreen1 extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               // Button with fixed position at bottom
               Container(
                 width: double.infinity,
@@ -52,11 +57,13 @@ class SurveyFormScreen1 extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SurveyFormScreen2()),
+                      MaterialPageRoute(
+                        builder: (context) => SurveyFormScreen2(),
+                      ),
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF1A5B8F),
+                    backgroundColor: CustomColors.primary,
                     padding: EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),

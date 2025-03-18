@@ -21,7 +21,7 @@ class BJBAuctionApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: "PlusJakartaSans",
         colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: const Color(0xFF1A5B8F),
+          primary: CustomColors.primary,
           secondary: const Color(0xFFFFCB05),
         ),
       ),

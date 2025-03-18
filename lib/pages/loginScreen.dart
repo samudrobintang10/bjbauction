@@ -1,6 +1,12 @@
+import 'package:bjbauction/pages/home.dart';
+import 'package:bjbauction/pages/homeAdmin.dart';
+import 'package:bjbauction/utils/color.dart';
 import 'package:flutter/material.dart';
 import 'package:bjbauction/pages/signupscreen.dart';
-import 'package:bjbauction/main.dart';
+import 'package:bjbauction/pages/surveyformscreen1.dart';
+import 'package:bjbauction/services/auth_service.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -13,6 +19,10 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _showPassword = false;
   bool _isError = false;
   String _errorMessage = '';
+  bool _isLoading = false;
+
+  // Initialize auth service
+  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -59,13 +69,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       horizontal: 16,
                       vertical: 12,
                     ),
-                    border: OutlineInputBorder(
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.grey.shade300),
+                      borderSide: BorderSide(color: CustomColors.primary),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Color(0xFF1A5B8F)),
+                      borderSide: BorderSide(color: CustomColors.primary),
                     ),
                     errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -89,13 +99,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       horizontal: 16,
                       vertical: 12,
                     ),
-                    border: OutlineInputBorder(
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.grey.shade300),
+                      borderSide: BorderSide(color: CustomColors.primary),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Color(0xFF1A5B8F)),
+                      borderSide: BorderSide(color: CustomColors.primary),
                     ),
                     errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -126,9 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Container(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
-                      _validateAndLogin(false);
-                    },
+                    onPressed: _isLoading ? null : _validateAndLogin,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF1A5B8F),
                       padding: EdgeInsets.symmetric(vertical: 12),
@@ -136,41 +144,55 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: Text(
-                      'Masuk',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                      ),
-                    ),
+                    child:
+                        _isLoading
+                            ? SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                            : Text(
+                              'Masuk',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                              ),
+                            ),
                   ),
                 ),
                 SizedBox(height: 16),
-                Container(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      _validateAndLogin(true);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF1A5B8F),
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Belum memiliki akun? ',
+                      style: TextStyle(fontSize: 14, color: Colors.black87),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignUpScreen(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Daftar Akun',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF1A5B8F),
+                        ),
                       ),
                     ),
-                    child: Text(
-                      'Masuk Admin',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                  ],
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 20),
               ],
             ),
           ),
@@ -179,27 +201,68 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _validateAndLogin(bool isAdmin) {
-    // String email = _emailController.text.trim();
-    // if (email.isNotEmpty && _passwordController.text.isNotEmpty) {
-    //   bool userIsAdmin = email.contains("admin");
-    //   if (isAdmin && !userIsAdmin) {
-    //     setState(() {
-    //       _isError = true;
-    //       _errorMessage = 'Akun ini bukan akun admin';
-    //     });
-    //     return;
-    //   }
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => MainScreen(isAdmin: isAdmin)),
-      (route) => false,
+  void _validateAndLogin() async {
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      setState(() {
+        _isError = true;
+        _errorMessage = 'Email dan password tidak boleh kosong';
+      });
+      return;
+    }
+
+    if (!_emailController.text.contains('@')) {
+      setState(() {
+        _isError = true;
+        _errorMessage = 'Email tidak valid';
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _isError = false;
+    });
+
+    // Call API login
+    final result = await _authService.login(
+      _emailController.text.trim(),
+      _passwordController.text,
     );
-    // } else {
-    //   setState(() {
-    //     _isError = true;
-    //     _errorMessage = 'Email dan password harus diisi!';
-    //   });
-    // }
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (result['success'] && result['data'] != null) {
+      String token = result['data']['access_token'];
+
+      // Decode token to get role
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+      String role = decodedToken['role']; // Extract role from JWT
+
+      // Save token and role in SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', token);
+      await prefs.setString('role', role);
+
+      if (role == 'admin') {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => HomeAdmin()),
+          (route) => false, // This removes all previous routes (LoginScreen)
+        );
+      } else {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+          (route) => false, // This removes all previous routes (LoginScreen)
+        );
+      }
+    } else {
+      setState(() {
+        _isError = true;
+        _errorMessage = result['message'] ?? 'Login gagal';
+      });
+    }
   }
 }

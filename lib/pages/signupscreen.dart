@@ -1,3 +1,4 @@
+import 'package:bjbauction/utils/color.dart';
 import 'package:flutter/material.dart';
 import 'package:bjbauction/pages/loginscreen.dart';
 import 'package:bjbauction/pages/surveyformscreen1.dart';
@@ -34,7 +35,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF1A5B8F),
+                    color: CustomColors.primary,
                   ),
                 ),
                 SizedBox(height: 8),
@@ -59,18 +60,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     hintText: 'Masukkan email',
-                    prefixIcon: Icon(Icons.email, color: Color(0xFF1A5B8F)),
+                    prefixIcon: Icon(Icons.email, color: CustomColors.primary),
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 16,
                       vertical: 12,
                     ),
-                    border: OutlineInputBorder(
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.grey.shade300),
+                      borderSide: BorderSide(color: CustomColors.primary),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Color(0xFF1A5B8F)),
+                      borderSide: BorderSide(color: CustomColors.primary),
                     ),
                   ),
                 ),
@@ -88,18 +89,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   obscureText: !_showPassword,
                   decoration: InputDecoration(
                     hintText: 'Masukkan password',
-                    prefixIcon: Icon(Icons.lock, color: Color(0xFF1A5B8F)),
+                    prefixIcon: Icon(Icons.lock, color: CustomColors.primary),
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 16,
                       vertical: 12,
                     ),
-                    border: OutlineInputBorder(
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.grey.shade300),
+                      borderSide: BorderSide(color: CustomColors.primary),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Color(0xFF1A5B8F)),
+                      borderSide: BorderSide(color: CustomColors.primary),
                     ),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -128,18 +129,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   obscureText: !_showConfirmPassword,
                   decoration: InputDecoration(
                     hintText: 'Masukkan ulang password',
-                    prefixIcon: Icon(Icons.lock, color: Color(0xFF1A5B8F)),
+                    prefixIcon: Icon(Icons.lock, color: CustomColors.primary),
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 16,
                       vertical: 12,
                     ),
-                    border: OutlineInputBorder(
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.grey.shade300),
+                      borderSide: BorderSide(color: CustomColors.primary),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Color(0xFF1A5B8F)),
+                      borderSide: BorderSide(color: CustomColors.primary),
                     ),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -177,7 +178,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       _validateAndSignUp();
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF1A5B8F),
+                      backgroundColor: CustomColors.primary,
                       padding: EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -217,7 +218,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF1A5B8F),
+                          color: CustomColors.primary,
                         ),
                       ),
                     ),

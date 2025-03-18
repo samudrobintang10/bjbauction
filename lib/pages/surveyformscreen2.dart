@@ -1,3 +1,4 @@
+import 'package:bjbauction/utils/color.dart';
 import 'package:flutter/material.dart';
 
 class SurveyFormScreen2 extends StatefulWidget {
@@ -36,7 +37,7 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF1A5B8F),
+                  color: CustomColors.primary,
                 ),
               ),
               SizedBox(height: 8),
@@ -118,7 +119,7 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
                 child: ElevatedButton(
                   onPressed: _submitData,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF1A5B8F),
+                    backgroundColor: CustomColors.primary,
                     padding: EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -164,13 +165,13 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
       decoration: InputDecoration(
         hintText: hintText,
         contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        border: OutlineInputBorder(
+        enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.grey.shade300),
+          borderSide: BorderSide(color: CustomColors.primary),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Color(0xFF1A5B8F)),
+          borderSide: BorderSide(color: CustomColors.primary),
         ),
         suffixIcon:
             suffixIcon != null ? Icon(suffixIcon, color: Colors.grey) : null,
@@ -186,7 +187,7 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: CustomColors.primary),
         borderRadius: BorderRadius.circular(8),
       ),
       child: DropdownButtonHideUnderline(
@@ -226,8 +227,8 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
       builder: (context, child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            primaryColor: Color(0xFF1A5B8F),
-            colorScheme: ColorScheme.light(primary: Color(0xFF1A5B8F)),
+            primaryColor: CustomColors.primary,
+            colorScheme: ColorScheme.light(primary: CustomColors.primary),
             buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
           ),
           child: child!,
@@ -263,7 +264,7 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Data berhasil disimpan'),
-        backgroundColor: Color(0xFF1A5B8F),
+        backgroundColor: CustomColors.primary,
       ),
     );
 
