@@ -5,7 +5,9 @@ import 'package:bjbauction/widgets/homeCard.dart';
 import 'package:flutter/material.dart';
 
 class Auction extends StatefulWidget {
-  const Auction({super.key});
+  final String? initialCategory;
+
+  const Auction({super.key, this.initialCategory});
 
   @override
   _AuctionState createState() => _AuctionState();
@@ -46,8 +48,18 @@ class _AuctionState extends State<Auction> {
 
   List<Map<String, String>> filteredAssets = [];
 
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialCategory != null) {
+      applyFilter(widget.initialCategory, null);
+    }
+  }
+
   void applyFilter(String? category, String? location) {
     setState(() {
+      selectedCategory = category;
+      selectedLocation = location;
       isFiltered = true;
       appBarTitle = "Hasil Pencarian";
 
@@ -66,6 +78,8 @@ class _AuctionState extends State<Auction> {
     setState(() {
       isFiltered = false;
       appBarTitle = "Aset Lelang";
+      selectedCategory = null;
+      selectedLocation = null;
       filteredAssets.clear();
     });
   }
@@ -78,21 +92,18 @@ class _AuctionState extends State<Auction> {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         toolbarHeight: 80,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Text(
-                  appBarTitle,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-              ],
+            Text(
+              appBarTitle,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
             ),
             IconButton(
               icon: Icon(

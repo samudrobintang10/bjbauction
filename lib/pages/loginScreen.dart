@@ -1,7 +1,6 @@
-import 'package:bjbauction/main.dart';
 import 'package:flutter/material.dart';
 import 'package:bjbauction/pages/signupscreen.dart';
-import 'package:bjbauction/pages/surveyformscreen1.dart';
+import 'package:bjbauction/main.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -18,10 +17,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false, // Prevent resize when keyboard appears
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SingleChildScrollView(
-          // Allow scrolling when keyboard shows
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
@@ -56,10 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     hintText: 'Masukkan email',
-                    prefixIcon: Icon(
-                      Icons.email,
-                      color: Color(0xFF1A5B8F),
-                    ), // Added email icon
+                    prefixIcon: Icon(Icons.email, color: Color(0xFF1A5B8F)),
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 16,
                       vertical: 12,
@@ -89,10 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   obscureText: !_showPassword,
                   decoration: InputDecoration(
                     hintText: 'Masukkan password',
-                    prefixIcon: Icon(
-                      Icons.lock,
-                      color: Color(0xFF1A5B8F),
-                    ), // Added lock icon for consistency
+                    prefixIcon: Icon(Icons.lock, color: Color(0xFF1A5B8F)),
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 16,
                       vertical: 12,
@@ -130,12 +122,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(color: Colors.red, fontSize: 12),
                     ),
                   ),
-                SizedBox(height: 40), // Fixed spacing instead of Spacer()
+                SizedBox(height: 40),
                 Container(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      _validateAndLogin();
+                      _validateAndLogin(false);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF1A5B8F),
@@ -149,41 +141,36 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color:
-                            Colors.white, // Explicit white color for visibility
+                        color: Colors.white,
                       ),
                     ),
                   ),
                 ),
                 SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Belum memiliki akun? ',
-                      style: TextStyle(fontSize: 14, color: Colors.black87),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SignUpScreen(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'Daftar Akun',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF1A5B8F),
-                        ),
+                Container(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _validateAndLogin(true);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF1A5B8F),
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                  ],
+                    child: Text(
+                      'Masuk Admin',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 16),
               ],
             ),
           ),
@@ -192,14 +179,21 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _validateAndLogin() {
-    // Example: Simple validation before navigating
-    // if (_emailController.text.isNotEmpty &&
-    //     _passwordController.text.isNotEmpty) {
+  void _validateAndLogin(bool isAdmin) {
+    // String email = _emailController.text.trim();
+    // if (email.isNotEmpty && _passwordController.text.isNotEmpty) {
+    //   bool userIsAdmin = email.contains("admin");
+    //   if (isAdmin && !userIsAdmin) {
+    //     setState(() {
+    //       _isError = true;
+    //       _errorMessage = 'Akun ini bukan akun admin';
+    //     });
+    //     return;
+    //   }
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => MainScreen()),
-      (route) => false, // This removes all previous screens from the stack
+      MaterialPageRoute(builder: (context) => MainScreen(isAdmin: isAdmin)),
+      (route) => false,
     );
     // } else {
     //   setState(() {

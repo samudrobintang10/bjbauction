@@ -1,3 +1,4 @@
+import 'package:bjbauction/pages/auction.dart';
 import 'package:bjbauction/sections/homeView.dart';
 import 'package:bjbauction/utils/color.dart';
 import 'package:bjbauction/widgets/QuickMenu.dart';
@@ -74,16 +75,40 @@ class _HomeState extends State<Home> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: QuickMenu(
-                          icon: "kendaraanIcon",
-                          text: "Kendaraan",
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) =>
+                                        Auction(initialCategory: "Kendaraan"),
+                              ),
+                            );
+                          },
+                          child: QuickMenu(
+                            icon: "kendaraanIcon",
+                            text: "Kendaraan",
+                          ),
                         ),
                       ),
                       SizedBox(width: 24),
                       Expanded(
-                        child: QuickMenu(
-                          icon: "propertiIcon",
-                          text: "Properti",
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) =>
+                                        Auction(initialCategory: "Properti"),
+                              ),
+                            );
+                          },
+                          child: QuickMenu(
+                            icon: "propertiIcon",
+                            text: "Properti",
+                          ),
                         ),
                       ),
                     ],
