@@ -2,16 +2,15 @@ import 'package:bjbauction/pages/auction.dart';
 import 'package:bjbauction/pages/home.dart';
 import 'package:bjbauction/pages/profile.dart';
 import 'package:bjbauction/pages/wishlist.dart';
+import 'package:bjbauction/pages/splashscreen.dart';
 import 'package:bjbauction/utils/color.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(BJBAuctionApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+class BJBAuctionApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,9 +18,12 @@ class MyApp extends StatelessWidget {
       title: 'BJB Auction',
       theme: ThemeData(
         fontFamily: "PlusJakartaSans",
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: Color(0xFF1A5B8F),
+          secondary: Color(0xFFFFCB05),
+        ),
       ),
-      home: MainScreen(),
+      home: SplashScreen(), // Show SplashScreen first
     );
   }
 }
@@ -52,17 +54,13 @@ class _MainScreenState extends State<MainScreen> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
-        selectedItemColor:
-            CustomColors.primary, // Ensure CustomColors is defined
+        selectedItemColor: CustomColors.primary, // Ensure CustomColors is defined
         unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.category), label: "Aset"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: "Favorite",
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Favorite"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Akun"),
         ],
         onTap: _onItemTapped, // Call the function to update index
