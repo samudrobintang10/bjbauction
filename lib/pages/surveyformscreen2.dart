@@ -15,7 +15,12 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
   String? _selectedLokasi;
 
   List<String> jenisKelaminList = ['Laki-Laki', 'Perempuan'];
-  List<String> lokasiList = ['Kota Bandung', 'Jakarta', 'Surabaya', 'Yogyakarta'];
+  List<String> lokasiList = [
+    'Kota Bandung',
+    'Jakarta',
+    'Surabaya',
+    'Yogyakarta',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -37,33 +42,39 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
               SizedBox(height: 8),
               Text(
                 'Isilah data diri dibawah ini dengan benar dan lengkap.',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black87,
-                ),
+                style: TextStyle(fontSize: 14, color: Colors.black87),
               ),
               SizedBox(height: 20),
-              
+
               // NIK Field
               _buildLabelText('NIK'),
-              _buildTextField(_nikController, 'Masukkan NIK', TextInputType.number),
+              _buildTextField(
+                _nikController,
+                'Masukkan NIK',
+                TextInputType.number,
+              ),
               SizedBox(height: 16),
-              
+
               // Nama Lengkap Field
               _buildLabelText('Nama Lengkap'),
               _buildTextField(_namaController, 'Masukkan nama lengkap'),
               SizedBox(height: 16),
-              
+
               // Tanggal Lahir Field
               _buildLabelText('Tanggal Lahir'),
               GestureDetector(
                 onTap: () => _selectDate(context),
                 child: AbsorbPointer(
-                  child: _buildTextField(_tanggalLahirController, 'DD/MM/YYYY', TextInputType.text, Icons.calendar_today),
+                  child: _buildTextField(
+                    _tanggalLahirController,
+                    'DD/MM/YYYY',
+                    TextInputType.text,
+                    Icons.calendar_today,
+                  ),
                 ),
               ),
               SizedBox(height: 16),
-              
+
               // Jenis Kelamin Field
               _buildLabelText('Jenis Kelamin'),
               _buildDropdown(
@@ -77,7 +88,7 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
                 },
               ),
               SizedBox(height: 16),
-              
+
               // Lokasi Field
               _buildLabelText('Lokasi'),
               _buildDropdown(
@@ -91,12 +102,16 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
                 },
               ),
               SizedBox(height: 16),
-              
+
               // Nomor Telepon Field
               _buildLabelText('Nomor Telepon'),
-              _buildTextField(_teleponController, 'Masukkan nomor telepon', TextInputType.phone),
+              _buildTextField(
+                _teleponController,
+                'Masukkan nomor telepon',
+                TextInputType.phone,
+              ),
               SizedBox(height: 40),
-              
+
               // Submit Button
               Container(
                 width: double.infinity,
@@ -114,7 +129,7 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      color: Colors.white
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -132,20 +147,17 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Text(
         label,
-        style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-        ),
+        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
       ),
     );
   }
 
   Widget _buildTextField(
-    TextEditingController controller, 
-    String hintText, 
-    [TextInputType? keyboardType, 
-    IconData? suffixIcon]
-  ) {
+    TextEditingController controller,
+    String hintText, [
+    TextInputType? keyboardType,
+    IconData? suffixIcon,
+  ]) {
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
@@ -160,7 +172,8 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: Color(0xFF1A5B8F)),
         ),
-        suffixIcon: suffixIcon != null ? Icon(suffixIcon, color: Colors.grey) : null,
+        suffixIcon:
+            suffixIcon != null ? Icon(suffixIcon, color: Colors.grey) : null,
       ),
     );
   }
@@ -189,15 +202,16 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
           elevation: 16,
           style: TextStyle(color: Colors.black87),
           onChanged: onChanged,
-          items: items.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(value),
-              ),
-            );
-          }).toList(),
+          items:
+              items.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(value),
+                  ),
+                );
+              }).toList(),
         ),
       ),
     );
@@ -222,7 +236,8 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
     );
     if (picked != null) {
       setState(() {
-        _tanggalLahirController.text = "${picked.day}/${picked.month}/${picked.year}";
+        _tanggalLahirController.text =
+            "${picked.day}/${picked.month}/${picked.year}";
       });
     }
   }
@@ -251,7 +266,7 @@ class _SurveyFormScreen2State extends State<SurveyFormScreen2> {
         backgroundColor: Color(0xFF1A5B8F),
       ),
     );
-    
+
     // Untuk demo, kembali ke login screen setelah submit
     Navigator.of(context).popUntil((route) => route.isFirst);
   }

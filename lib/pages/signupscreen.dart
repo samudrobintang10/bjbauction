@@ -21,7 +21,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false, // Prevent resize when keyboard appears
       body: SafeArea(
-        child: SingleChildScrollView( // Allow scrolling when keyboard shows
+        child: SingleChildScrollView(
+          // Allow scrolling when keyboard shows
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
@@ -39,27 +40,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(height: 8),
                 Text(
                   'Daftarkan akunmu untuk mendapatkan',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                  ),
+                  style: TextStyle(fontSize: 14, color: Colors.black),
                 ),
                 Text(
                   'akses lebih luas!',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                  ),
+                  style: TextStyle(fontSize: 14, color: Colors.black),
                 ),
                 SizedBox(height: 30),
-                
+
                 // Email field
                 Text(
                   'Email',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                 ),
                 SizedBox(height: 8),
                 TextFormField(
@@ -68,7 +60,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   decoration: InputDecoration(
                     hintText: 'Masukkan email',
                     prefixIcon: Icon(Icons.email, color: Color(0xFF1A5B8F)),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(color: Colors.grey.shade300),
@@ -79,16 +74,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                 ),
-                
+
                 SizedBox(height: 16),
-                
+
                 // Password field
                 Text(
                   'Password',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                 ),
                 SizedBox(height: 8),
                 TextFormField(
@@ -97,7 +89,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   decoration: InputDecoration(
                     hintText: 'Masukkan password',
                     prefixIcon: Icon(Icons.lock, color: Color(0xFF1A5B8F)),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(color: Colors.grey.shade300),
@@ -119,16 +114,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                 ),
-                
+
                 SizedBox(height: 16),
-                
+
                 // Confirm password field
                 Text(
                   'Konfirmasi Password',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                 ),
                 SizedBox(height: 8),
                 TextFormField(
@@ -137,7 +129,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   decoration: InputDecoration(
                     hintText: 'Masukkan ulang password',
                     prefixIcon: Icon(Icons.lock, color: Color(0xFF1A5B8F)),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(color: Colors.grey.shade300),
@@ -148,7 +143,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _showConfirmPassword ? Icons.visibility : Icons.visibility_off,
+                        _showConfirmPassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                         color: Colors.grey,
                       ),
                       onPressed: () {
@@ -159,23 +156,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                 ),
-                
+
                 SizedBox(height: 16),
-                                
+
                 if (_isError)
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text(
                       _errorMessage,
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 12,
-                      ),
+                      style: TextStyle(color: Colors.red, fontSize: 12),
                     ),
                   ),
-                
+
                 SizedBox(height: 24), // Fixed height instead of Spacer()
-                
                 // Sign Up button
                 Container(
                   width: double.infinity,
@@ -200,24 +193,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                 ),
-                
+
                 SizedBox(height: 16),
-                
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       'Sudah memiliki akun? ',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black87,
-                      ),
+                      style: TextStyle(fontSize: 14, color: Colors.black87),
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => LoginScreen()),
+                          MaterialPageRoute(
+                            builder: (context) => LoginScreen(),
+                          ),
                         );
                       },
                       child: Text(
@@ -247,31 +239,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _errorMessage = '';
     });
 
-    // Simple validation
-    if (_emailController.text.isEmpty || 
-        _passwordController.text.isEmpty || _confirmPasswordController.text.isEmpty) {
-      setState(() {
-        _isError = true;
-        _errorMessage = 'Semua field harus diisi';
-      });
-      return;
-    }
+    // // Simple validation
+    // if (_emailController.text.isEmpty ||
+    //     _passwordController.text.isEmpty ||
+    //     _confirmPasswordController.text.isEmpty) {
+    //   setState(() {
+    //     _isError = true;
+    //     _errorMessage = 'Semua field harus diisi';
+    //   });
+    //   return;
+    // }
 
-    if (!_emailController.text.contains('@')) {
-      setState(() {
-        _isError = true;
-        _errorMessage = 'Email tidak valid';
-      });
-      return;
-    }
+    // if (!_emailController.text.contains('@')) {
+    //   setState(() {
+    //     _isError = true;
+    //     _errorMessage = 'Email tidak valid';
+    //   });
+    //   return;
+    // }
 
-    if (_passwordController.text != _confirmPasswordController.text) {
-      setState(() {
-        _isError = true;
-        _errorMessage = 'Password dan konfirmasi password tidak sama';
-      });
-      return;
-    }
+    // if (_passwordController.text != _confirmPasswordController.text) {
+    //   setState(() {
+    //     _isError = true;
+    //     _errorMessage = 'Password dan konfirmasi password tidak sama';
+    //   });
+    //   return;
+    // }
 
     // Simulate signup success and navigate to Survey Form
     Navigator.push(

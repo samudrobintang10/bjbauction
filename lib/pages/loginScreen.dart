@@ -1,3 +1,4 @@
+import 'package:bjbauction/main.dart';
 import 'package:flutter/material.dart';
 import 'package:bjbauction/pages/signupscreen.dart';
 import 'package:bjbauction/pages/surveyformscreen1.dart';
@@ -19,7 +20,8 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false, // Prevent resize when keyboard appears
       body: SafeArea(
-        child: SingleChildScrollView( // Allow scrolling when keyboard shows
+        child: SingleChildScrollView(
+          // Allow scrolling when keyboard shows
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
@@ -37,25 +39,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: 8),
                 Text(
                   'Hai! Selamat Datang Kembali!',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black87,
-                  ),
+                  style: TextStyle(fontSize: 14, color: Colors.black87),
                 ),
                 Text(
                   'Temukan aset pilihanmu bersama kami',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black87,
-                  ),
+                  style: TextStyle(fontSize: 14, color: Colors.black87),
                 ),
                 SizedBox(height: 30),
                 Text(
                   'Email',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                 ),
                 SizedBox(height: 8),
                 TextFormField(
@@ -63,8 +56,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     hintText: 'Masukkan email',
-                    prefixIcon: Icon(Icons.email, color: Color(0xFF1A5B8F)), // Added email icon
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    prefixIcon: Icon(
+                      Icons.email,
+                      color: Color(0xFF1A5B8F),
+                    ), // Added email icon
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(color: Colors.grey.shade300),
@@ -82,10 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: 16),
                 Text(
                   'Password',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                 ),
                 SizedBox(height: 8),
                 TextFormField(
@@ -93,8 +89,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   obscureText: !_showPassword,
                   decoration: InputDecoration(
                     hintText: 'Masukkan password',
-                    prefixIcon: Icon(Icons.lock, color: Color(0xFF1A5B8F)), // Added lock icon for consistency
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    prefixIcon: Icon(
+                      Icons.lock,
+                      color: Color(0xFF1A5B8F),
+                    ), // Added lock icon for consistency
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(color: Colors.grey.shade300),
@@ -125,10 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text(
                       _errorMessage,
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 12,
-                      ),
+                      style: TextStyle(color: Colors.red, fontSize: 12),
                     ),
                   ),
                 SizedBox(height: 40), // Fixed spacing instead of Spacer()
@@ -150,10 +149,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: Colors.white, // Explicit white color for visibility
+                        color:
+                            Colors.white, // Explicit white color for visibility
                       ),
                     ),
-                    
                   ),
                 ),
                 SizedBox(height: 16),
@@ -162,16 +161,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Text(
                       'Belum memiliki akun? ',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black87,
-                      ),
+                      style: TextStyle(fontSize: 14, color: Colors.black87),
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => SignUpScreen()),
+                          MaterialPageRoute(
+                            builder: (context) => SignUpScreen(),
+                          ),
                         );
                       },
                       child: Text(
@@ -195,10 +193,18 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _validateAndLogin() {
-    // Rest of the method remains the same
-    Navigator.push(
+    // Example: Simple validation before navigating
+    // if (_emailController.text.isNotEmpty &&
+    //     _passwordController.text.isNotEmpty) {
+    Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => SurveyFormScreen1()),
+      MaterialPageRoute(builder: (context) => MainScreen()),
     );
+    // } else {
+    //   setState(() {
+    //     _isError = true;
+    //     _errorMessage = 'Email dan password harus diisi!';
+    //   });
+    // }
   }
 }

@@ -14,8 +14,8 @@ class _SplashScreenState extends State<SplashScreen> {
     // Navigasi ke halaman walkthrough setelah beberapa detik
     Future.delayed(Duration(milliseconds: 2000), () {
       Navigator.pushReplacement(
-        context, 
-        MaterialPageRoute(builder: (context) => WalkthroughScreen())
+        context,
+        MaterialPageRoute(builder: (context) => WalkthroughScreen()),
       );
     });
   }
@@ -60,42 +60,45 @@ class WalkthroughScreen extends StatefulWidget {
 class _WalkthroughScreenState extends State<WalkthroughScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
-  
+
   // Timer untuk auto-sliding
   Timer? _timer;
 
   final List<WalkthroughContent> _contents = [
     WalkthroughContent(
       title: 'Detail Informasi Aset',
-      description: 'Temukan berbagai macam informasi pelelangan aset secara lengkap dan terpercaya',
+      description:
+          'Temukan berbagai macam informasi pelelangan aset secara lengkap dan terpercaya',
       image: 'assets/images/walkthrough1.png',
     ),
     WalkthroughContent(
       title: 'Favorit List Aset',
-      description: 'Kumpulkan berbagai jenis informasi aset lelang yang dapat kamu ikuti',
+      description:
+          'Kumpulkan berbagai jenis informasi aset lelang yang dapat kamu ikuti',
       image: 'assets/images/walkthrough2.png',
     ),
     WalkthroughContent(
       title: 'Lokasi Aset Terjangkau',
-      description: 'Jaringan lokasi yang tersebar hingga lebih dari 30 kota di Jawa Barat',
+      description:
+          'Jaringan lokasi yang tersebar hingga lebih dari 30 kota di Jawa Barat',
       image: 'assets/images/walkthrough3.png',
     ),
   ];
-  
+
   @override
   void initState() {
     super.initState();
     // Jalankan auto-slider
     _startAutoSlider();
   }
-  
+
   @override
   void dispose() {
     _pageController.dispose();
     _timer?.cancel(); // Hentikan timer saat widget dihapus
     super.dispose();
   }
-  
+
   // Method untuk memulai auto-slider
   void _startAutoSlider() {
     _timer = Timer.periodic(Duration(seconds: 5), (timer) {
@@ -104,7 +107,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
       } else {
         _currentPage = 0;
       }
-      
+
       _pageController.animateToPage(
         _currentPage,
         duration: Duration(milliseconds: 500),
@@ -121,18 +124,18 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
       );
     } else {
       // Navigate to SignUpScreen
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => SignUpScreen()),
       );
     }
   }
-  
+
   // Method untuk navigasi ke halaman tertentu ketika dot indicator diklik
   void _goToPage(int pageIndex) {
     _pageController.animateToPage(
       pageIndex,
-      duration: Duration(milliseconds: 300),
+      duration: Duration(milliseconds: 10000),
       curve: Curves.easeInOut,
     );
   }
@@ -146,7 +149,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
           children: [
             // App Bar
             _buildAppBar(),
-            
+
             // Walkthrough content (bergerak saat diswipe)
             Expanded(
               child: PageView.builder(
@@ -162,7 +165,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                 },
               ),
             ),
-            
+
             // Bottom section (tetap statis)
             _buildStaticBottomSection(),
           ],
@@ -200,27 +203,21 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
               ],
             ),
           ),
-          
+
           // Skip button
           TextButton(
             onPressed: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => SignUpScreen()),
               );
             },
-            child: Text(
-              'Lewati',
-              style: TextStyle(
-                color: Color(0xFF1A5B8F),
-              ),
-            ),
+            child: Text('Lewati', style: TextStyle(color: Color(0xFF1A5B8F))),
           ),
         ],
       ),
     );
   }
-
 
   Widget _buildPageContent(int index) {
     return Padding(
@@ -244,9 +241,9 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
               },
             ),
           ),
-          
+
           SizedBox(height: 30),
-          
+
           // Title
           Text(
             _contents[index].title,
@@ -256,17 +253,14 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
               color: Color(0xFF1A5B8F),
             ),
           ),
-          
+
           SizedBox(height: 15),
-          
+
           // Description
           Text(
             _contents[index].description,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[600],
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.grey[600]),
           ),
         ],
       ),
@@ -286,22 +280,30 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
               (i) => GestureDetector(
                 onTap: () => _goToPage(i),
                 child: Container(
-                  width: i == _currentPage ? 24 : 8, // Lebih panjang untuk yang aktif
+                  width:
+                      i == _currentPage
+                          ? 24
+                          : 8, // Lebih panjang untuk yang aktif
                   height: 8,
                   margin: EdgeInsets.symmetric(horizontal: 4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
-                    color: i == _currentPage
-                        ? Color(0xFF1A5B8F) // Warna biru tua untuk yang aktif
-                        : Color(0xFFBBDEF8), // Warna biru muda untuk yang tidak aktif
+                    color:
+                        i == _currentPage
+                            ? Color(
+                              0xFF1A5B8F,
+                            ) // Warna biru tua untuk yang aktif
+                            : Color(
+                              0xFFBBDEF8,
+                            ), // Warna biru muda untuk yang tidak aktif
                   ),
                 ),
               ),
             ),
           ),
-          
+
           SizedBox(height: 30),
-          
+
           // Button (tetap statis)
           SizedBox(
             width: double.infinity,
@@ -316,10 +318,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
               ),
               child: Text(
                 'Selanjutnya',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.white),
               ),
             ),
           ),
